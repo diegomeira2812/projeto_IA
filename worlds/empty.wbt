@@ -1,0 +1,39 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3at.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/WoodenBox.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.1398258503041488 0.13791868758455303 0.9805239248491983 1.6042120037986214
+  position -0.579048234395703 -7.946733498230196 3.382919682562785
+}
+TexturedBackground {
+}
+RectangleArena {
+  floorSize 4 4
+  wallHeight 0.3
+}
+Pioneer3at {
+  hidden position_0_0 3.2912405237759046e-07
+  hidden position_0_1 3.2950533890060833e-07
+  hidden position_0_2 -3.2438064034292525e-07
+  hidden position_0_3 -3.34908659726322e-07
+  hidden rotation_1 0.5773515391783436 -0.5773475391821833 -0.5773517291986532 2.094404809981028
+  hidden rotation_2 0.5773515391049643 -0.5773475391088052 -0.5773517293454101 2.094404809760893
+  hidden rotation_3 0.5773516649466803 -0.5773476649483639 -0.5773514776650079 2.0944051872803953
+  hidden rotation_4 0.5773516669728188 -0.5773476669744677 -0.5773514736127782 2.094405193358723
+  translation 0.043487418599452286 0.00026688954554034274 -0.002388931328244026
+  rotation -0.014132706249759394 0.9479391324473863 -0.318137812573348 5.1878161477823e-05
+  controller "my_controller"
+}
+WoodenBox {
+  translation -1.06 0 0.3
+}
+DirectionalLight {
+  direction 0 -1 0
+  intensity 3
+}
