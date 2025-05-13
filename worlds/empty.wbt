@@ -2,14 +2,14 @@
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3at.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/gctronic/e-puck/protos/E-puck.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/WoodenBox.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.1398258503041488 0.13791868758455303 0.9805239248491983 1.6042120037986214
-  position -0.579048234395703 -7.946733498230196 3.382919682562785
+  orientation -0.475479893979337 -0.46415938498601594 0.7473118062434194 4.402126873615438
+  position 0.04510349499714206 2.9671601490873987 4.741181516742145
 }
 TexturedBackground {
 }
@@ -17,21 +17,24 @@ RectangleArena {
   floorSize 4 4
   wallHeight 0.3
 }
-Pioneer3at {
-  hidden position_0_0 3.2912405237759046e-07
-  hidden position_0_1 3.2950533890060833e-07
-  hidden position_0_2 -3.2438064034292525e-07
-  hidden position_0_3 -3.34908659726322e-07
-  hidden rotation_1 0.5773515391783436 -0.5773475391821833 -0.5773517291986532 2.094404809981028
-  hidden rotation_2 0.5773515391049643 -0.5773475391088052 -0.5773517293454101 2.094404809760893
-  hidden rotation_3 0.5773516649466803 -0.5773476649483639 -0.5773514776650079 2.0944051872803953
-  hidden rotation_4 0.5773516669728188 -0.5773476669744677 -0.5773514736127782 2.094405193358723
-  translation 0.043487418599452286 0.00026688954554034274 -0.002388931328244026
-  rotation -0.014132706249759394 0.9479391324473863 -0.318137812573348 5.1878161477823e-05
-  controller "my_controller"
+DEF CAIXA WoodenBox {
+  translation -1.47 0.45 0.3
 }
-WoodenBox {
-  translation -1.06 0 0.3
+E-puck {
+  hidden position_0_0 849.143298148639
+  hidden position_0_1 -16.20331511254823
+  hidden linearVelocity_0 3.017327246955716e-11 -3.223722637752332e-10 -2.53647651954717e-05
+  hidden angularVelocity_0 2.1923233487598333e-08 1.7375064317360889e-09 -2.016987682053782e-05
+  hidden rotation_1 0 -1 0 5.369903627784742
+  hidden linearVelocity_1 0.00042841881306119613 -0.0009320548940818061 5.085744051500669e-05
+  hidden angularVelocity_1 -0.4836318602642823 6.261395494582654 -0.032841301742088574
+  hidden rotation_2 0 -1 0 3.6369444981890555
+  hidden linearVelocity_2 -0.0004284187167047344 0.0009320540477687516 5.08563039252954e-05
+  hidden angularVelocity_2 0.48363190395797 -6.261395491084955 -0.032841309076530927
+  translation 0.311343138584006 1.8268500397391019 -0.00014648672466419793
+  rotation -1.5351509045992942e-08 -5.127376087184885e-10 -0.9999999999999998 -0.08090075533264685
+  controller "my_controller"
+  supervisor TRUE
 }
 DirectionalLight {
   direction 0 -1 0
