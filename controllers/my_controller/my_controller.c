@@ -32,6 +32,19 @@
 #define TamanhoTexto 256
 #define QtddCaixa 20
 
+void delay(int time_milisec)
+  {
+    double currentTime, initTime, Timeleft;
+    double timeValue = (double)time_milisec/1000;
+    initTime = wb_robot_get_time();
+    Timeleft =0.00;
+    while (Timeleft < timeValue)
+    {
+      currentTime = wb_robot_get_time();
+      Timeleft=currentTime-initTime;
+      wb_robot_step(TIME_STEP);
+    }
+  }
 
 /*
  * This is the main program.
@@ -131,8 +144,11 @@ int main(int argc, char **argv) {
    * Perform simulation steps of TIME_STEP milliseconds
    * and leave the loop when the simulation is over
    */
-
+  prev_encoder_esq = wb_position_sensor_get_value(encoder_esq);
+  prev_encoder_dir = wb_position_sensor_get_value(encoder_dir);
+  
   while (wb_robot_step(TIME_STEP) != -1) {
+
     //lendo sensores de proximidade
     for(i=0;i<QtddSensoresProx;i++){
        LeituraSensorProx[i]= wb_distance_sensor_get_value(SensorProx[i])-60;
@@ -161,12 +177,46 @@ int main(int argc, char **argv) {
 
     //mostrando valores lidos
     printf("%s\n",texto);
+
     //colisao
-    if (LeituraSensorProx[0] > 200){
+    if (LeituraSensorProx[0] > 200 || LeituraSensorProx[7] > 200){
       printf("Colisao");
-      wb_motor_set_velocity(MotorEsquerdo,0);
+      wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+      wb_motor_set_velocity(MotorDireito,0);
+
+      wb_motor_set_velocity(MotorEsquerdo, 6.28); // processo para girar o robo
+      wb_motor_set_velocity(MotorDireito, -6.28);
+      delay(1500);
+
+      wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
       wb_motor_set_velocity(MotorDireito,0);
     }
+    
+    /*else if (LeituraSensorProx[6] > 150 || LeituraSensorProx[5] > 150){
+      printf("Colisao lateral");
+      wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+      wb_motor_set_velocity(MotorDireito,0);
+      
+      wb_motor_set_velocity(MotorEsquerdo, 6.28); // processo para girar o robo
+      wb_motor_set_velocity(MotorDireito, -6.28);
+      delay(500);
+
+      wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+      wb_motor_set_velocity(MotorDireito,0);
+    }
+    
+    else if (LeituraSensorProx[1] > 150 || LeituraSensorProx[2] > 150){
+      printf("Colisao lateral");
+      wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+      wb_motor_set_velocity(MotorDireito,0);
+      
+      wb_motor_set_velocity(MotorEsquerdo, -6.28); // processo para girar o robo
+      wb_motor_set_velocity(MotorDireito, 6.28);
+      delay(500);
+
+      wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+      wb_motor_set_velocity(MotorDireito,0);
+    }*/
     else{
       wb_motor_set_velocity(MotorEsquerdo, 6.28* AceleradorEsquerdo);
       wb_motor_set_velocity(MotorDireito , 6.28* AceleradorDireito);
