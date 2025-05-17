@@ -10,8 +10,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.0003980300152676522 0.9999998245690963 0.00043867286618949505 1.480799330276319
-  position -0.21352170625395356 -0.03484190252118595 1.4789872845719494
+  orientation -0.5773502691896257 0.5773502691896257 0.5773502691896257 2.0944
+  position -2.183823485861963e-05 -2.183829660858544e-05 2.2768430967832334
 }
 TexturedBackground {
 }
@@ -24,23 +24,21 @@ RectangleArena {
   }
 }
 E-puck {
-  hidden position_0_0 -47.428473982936666
-  hidden position_0_1 73.06329160691396
-  hidden rotation_1 0 1 0 2.837008474500026
-  hidden rotation_2 0 -0.9999999999999999 0 2.3349320792410735
+  translation 9.677344629240318e-11 1.7815266609015336e-11 -6.391454876114068e-05
+  rotation 0.9998611881359452 -0.01666146628853836 7.015071239881699e-07 1.190899045989971e-07
   controller "my_controller"
   supervisor TRUE
 }
-DEF CAIXA03 WoodenBox {
+DEF CAIXA02 WoodenBox {
   translation 0.35 0 0.05
   size 0.1 0.1 0.1
 }
-DEF CAIXA02 WoodenBox {
+DEF CAIXA03 WoodenBox {
   translation 0.15 0 0.05
   name "wooden box(2)"
   size 0.1 0.1 0.1
 }
-DEF CAIXA01 WoodenBox {
+DEF CAIXA04 WoodenBox {
   translation -0.15 0 0.05
   name "wooden box(3)"
   size 0.1 0.1 0.1
@@ -56,8 +54,8 @@ DEF CAIXA17 WoodenBox {
   size 0.1 0.1 0.1
 }
 DEF CAIXA11 WoodenBox {
-  translation 1.886334779200104e-11 0.3500000000050606 0.049976456
-  rotation 2.2857633596977807e-09 -1.379713340463688e-08 1 6.101201876980891e-09
+  translation -1.171318574081416e-08 0.3499999941866274 0.04997647350049474
+  rotation 0.44418343530458326 -0.895633140739792 0.023288473749799598 2.619833630408615e-07
   name "wooden box(10)"
   size 0.05 0.1 0.1
   mass 0.06
@@ -107,7 +105,7 @@ DEF CAIXA08 WoodenBox {
   name "wooden box(7)"
   size 0.1 0.1 0.1
 }
-DEF CAIXA04 WoodenBox {
+DEF CAIXA14 WoodenBox {
   translation 0 -0.165 0.05
   name "wooden box(13)"
   size 0.1 0.1 0.1
@@ -122,7 +120,7 @@ DEF CAIXA15 WoodenBox {
   name "wooden box(14)"
   size 0.1 0.1 0.1
 }
-DEF CAIXA14 WoodenBox {
+DEF CAIXA01 WoodenBox {
   translation 0.35 0.35 0.05
   name "wooden box(1)"
   size 0.1 0.1 0.1

@@ -52,6 +52,27 @@ void delay(int time_milisec)
  * "controllerArgs" field of the Robot node
  */
 
+void caixaEncontrada() {
+  printf("entrou");
+  WbDeviceTag MotorEsquerdo, MotorDireito;
+  MotorEsquerdo = wb_robot_get_device("left wheel motor");
+  MotorDireito = wb_robot_get_device("right wheel motor");
+  
+  //config leds
+  WbDeviceTag Leds[QtddLeds];
+  Leds[0] = wb_robot_get_device("led0");
+  wb_led_set(Leds[0],-1);
+  
+    
+  while(wb_robot_step(TIME_STEP) != -1){
+    wb_motor_set_velocity(MotorEsquerdo, 6.28); // processo para girar o robo
+    wb_motor_set_velocity(MotorDireito, -6.28);
+    
+    //pisca o led
+    wb_led_set(Leds[0], wb_led_get(Leds[0])*-1); 
+  }
+}
+
 int main(int argc, char **argv) {
 
   double pos_x = 0, pos_y = 0, theta = 0; // posição estimada e orientação
@@ -63,11 +84,11 @@ int main(int argc, char **argv) {
   char texto[TamanhoTexto]={0};
   double LeituraSensorProx[QtddSensoresProx];
   double AceleradorDireito=1.0, AceleradorEsquerdo=1.0;
-  
+  double pos_iniciais[QtddCaixa][3];
   
 
   /* necessary to initialize webots stuff */
-   wb_robot_init();
+  wb_robot_init();
  
    /*
     * You should declare here WbDeviceTag variables for storing
@@ -99,6 +120,9 @@ int main(int argc, char **argv) {
     printf("           X       Y      Z\n");
     for(i=0;i<QtddCaixa;i++){
       const double *PosicaoCaixa = wb_supervisor_node_get_position(caixa[i]);
+      for (int j = 0; j < 3; j++){
+        pos_iniciais[i][j] = PosicaoCaixa[j];
+      }
       printf("CAIXA%02d %5.2f   %5.2f  %5.2f\n\n",i+1,PosicaoCaixa[0],PosicaoCaixa[1],PosicaoCaixa[2]);
     }
   
@@ -135,17 +159,15 @@ int main(int argc, char **argv) {
     }
 
 
-    //config leds
-    WbDeviceTag Leds[QtddLeds];
-    Leds[0] = wb_robot_get_device("led0");
-    wb_led_set(Leds[0],-1);
+    
 
   /* main loop
    * Perform simulation steps of TIME_STEP milliseconds
    * and leave the loop when the simulation is over
    */
-  prev_encoder_esq = wb_position_sensor_get_value(encoder_esq);
-  prev_encoder_dir = wb_position_sensor_get_value(encoder_dir);
+    wb_robot_step(TIME_STEP);  // primeiro passo para garantir leitura válida
+    prev_encoder_esq = wb_position_sensor_get_value(encoder_esq);
+    prev_encoder_dir = wb_position_sensor_get_value(encoder_dir);
   
   while (wb_robot_step(TIME_STEP) != -1) {
 
@@ -154,6 +176,7 @@ int main(int argc, char **argv) {
        LeituraSensorProx[i]= wb_distance_sensor_get_value(SensorProx[i])-60;
        printf("|ps%d: %6.0f  ",i,LeituraSensorProx[i]);
     }
+
 
     double curr_encoder_esq = wb_position_sensor_get_value(encoder_esq);
     double curr_encoder_dir = wb_position_sensor_get_value(encoder_dir);
@@ -180,7 +203,22 @@ int main(int argc, char **argv) {
 
     //colisao
     if (LeituraSensorProx[0] > 200 || LeituraSensorProx[7] > 200){
-      printf("Colisao");
+      printf("Colisao\n");
+      // Verifica se alguma caixa foi movida
+      for (i = 0; i < QtddCaixa; i++) {
+        const double *novaPos = wb_supervisor_node_get_position(caixa[i]);
+        double dx = novaPos[0] - pos_iniciais[i][0];
+        double dz = novaPos[2] - pos_iniciais[i][2]; // ignorando Y (altura)
+        double deslocamento = sqrt(dx*dx + dz*dz);
+      
+        if (deslocamento > 0.02) { // limiar de movimento (2 cm)
+          wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+          wb_motor_set_velocity(MotorDireito,0);
+          printf("Caixa leve encontrada! É a CAIXA%02d\n", i+1);
+          caixaEncontrada();
+          break;
+        }
+      }
       wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
       wb_motor_set_velocity(MotorDireito,0);
 
@@ -192,8 +230,22 @@ int main(int argc, char **argv) {
       wb_motor_set_velocity(MotorDireito,0);
     }
     
-    /*else if (LeituraSensorProx[6] > 150 || LeituraSensorProx[5] > 150){
+    else if (LeituraSensorProx[6] > 200 || LeituraSensorProx[4] > 200){
       printf("Colisao lateral");
+      for (i = 0; i < QtddCaixa; i++) {
+        const double *novaPos = wb_supervisor_node_get_position(caixa[i]);
+        double dx = novaPos[0] - pos_iniciais[i][0];
+        double dz = novaPos[2] - pos_iniciais[i][2]; // ignorando Y (altura)
+        double deslocamento = sqrt(dx*dx + dz*dz);
+      
+        if (deslocamento > 0.02) { // limiar de movimento (2 cm)
+          wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
+          wb_motor_set_velocity(MotorDireito,0);
+          printf("Caixa leve encontrada! É a CAIXA%02d\n", i+1);
+          caixaEncontrada();
+          break;
+        }
+       }
       wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
       wb_motor_set_velocity(MotorDireito,0);
       
@@ -205,7 +257,7 @@ int main(int argc, char **argv) {
       wb_motor_set_velocity(MotorDireito,0);
     }
     
-    else if (LeituraSensorProx[1] > 150 || LeituraSensorProx[2] > 150){
+    /*else if (LeituraSensorProx[1] > 150 || LeituraSensorProx[2] > 150){
       printf("Colisao lateral");
       wb_motor_set_velocity(MotorEsquerdo,0); // para os motores
       wb_motor_set_velocity(MotorDireito,0);
@@ -221,9 +273,6 @@ int main(int argc, char **argv) {
       wb_motor_set_velocity(MotorEsquerdo, 6.28* AceleradorEsquerdo);
       wb_motor_set_velocity(MotorDireito , 6.28* AceleradorDireito);
     }
-
-     //pisca o led
-    wb_led_set(Leds[0], wb_led_get(Leds[0])*-1); 
 
     //define o sentido de rotação em função da posição da caixa
     //lembre-se, é apenas um exemplo!
